@@ -1,0 +1,50 @@
+Fundamental Building Elements - Components
+Interaction between related - props
+API Calls - fetch/axios
+Styling - One or global - CSS/MUI/Bootstrap
+Interaction across Components - Redux
+Load components that are to be at the right place - Routing
+
+ANtD
+
+
+Components
+Service
+Models
+
+------------------
+
+src
+  Products
+  Comp
+
+-----------------------
+let [name,setName] = useState('John Doe');
+//  const[customer,setCustomer] = useState({name:'John Doe',age:25}) 
+//  const [scores,setScores] = useState([10,20,30,40,50,10,20])
+
+//   const changeName = function (){
+//    setName("Ramu")
+  
+//     }
+//     const updateCustomer=()=>{
+//      // setName("somu")
+//       setCustomer(cust=>({...cust,name:name}))
+//     }
+
+ <h1>Hello World - {name}</h1>
+      <p>
+        {customer.name} is {customer.age} years old
+      </p>
+      <hr/>
+      <h2>Scores</h2>
+      <ul>
+        {
+          scores.map((score,index)=>{
+            return <li key={index}>{score}</li> 
+        })
+      }
+      </ul>
+      <button onClick={changeName}>Change Name</button>
+      <button onClick={updateCustomer}>Change Customer</button>
+
