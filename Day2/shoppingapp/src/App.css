@@ -1,3 +1,10 @@
-.App {
-  text-align: center;
+
+.banner
+{
+  position: relative;
+  height: 300px;
+}
+.content{
+  position: relative;
+  top:30px;
 }

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import { addNewProduct } from '../../Services/ProductService';
 import './AddProduct.css';
 
@@ -10,6 +11,8 @@ const AddProduct = () => {
     const[status,setStatus]=useState(false);
 
     const[error,setError]=useState({title:" ",price:" ",quantity:" "});
+    const navigate = useNavigate();
+
     const submitHandler = (event) => {
         event.preventDefault();
         setStatus(true);
@@ -25,6 +28,7 @@ const AddProduct = () => {
         .then(response=>{
            if(response.status===201)
                 alert("Product Added Successfully");
+            navigate('/products');
         }).catch(error=>{
             alert("Something went wrong");
         }).finally(()=>{
@@ -55,6 +59,7 @@ const AddProduct = () => {
     }
     return(
         <div>
+            <button onClick={()=>navigate('/products')} className="btn btn-primary">Back</button>
             <h1>Add Product</h1>
             <form className="product-form">
                 <label className="form-control">Product Name</label>

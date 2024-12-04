@@ -12,6 +12,7 @@ export default function Login(){
     const loginHandler =async()=>{
        var data =await authenticateUser(user);
        sessionStorage.setItem('token',data.data.accessToken);
+       
     }
     return(
         <div>
