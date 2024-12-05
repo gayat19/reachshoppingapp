@@ -6,19 +6,36 @@ import Login from './Components/Login/Login';
 import Products from './Components/Products/Products';
 import Home from './Components/Home/Home';
 import { ProtectedRoute } from './ProtectedRoute';
+import ProductDetails from './Components/ProductDetails/ProductDetails';
+import ProductList from './Components/ProductList/ProductList';
+import { createContext,useState } from 'react';
+import Shop from './Components/Shop/Shop';
 
+import Cart from './Components/Cart/Cart';
+
+export const UserContext = createContext();
 function App() {
+  const [user,setUser] = useState();
   return (
     <div className="App">
+      <UserContext.Provider value={{user,setUser}}>
       <div className='content'>
+      <h2>
+        Welcome to the Shopping App - {user}
+      </h2>
           <BrowserRouter>
               <Header/>
 
+
             <Routes>
               <Route path="/home" element={<Home/>}>
-                  <Route path='child' element={<Login/>}/>
+              <Route path='list' element={<ProductList/>}>
+                <Route path='/home/list/details/:pname' element={<ProductDetails/>}/>
+              </Route>
               </Route> 
               <Route path="/login" element={<Login/>}/>
+              <Route path="/shop" element={<Shop/>}/>
+              <Route path="/cart" element={<Cart/>}/>
               <Route path="/products" element={<Products/>}/>
               <Route path='/addprod'  element=
                { <ProtectedRoute child={<AddProduct/>}/>}/>
@@ -26,6 +43,7 @@ function App() {
             </Routes>
           </BrowserRouter>
       </div>
+      </UserContext.Provider>
         </div>
   );
 }

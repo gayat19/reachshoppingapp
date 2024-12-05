@@ -1,0 +1,4 @@
+1) Parent child - props(up- event parameter and down-data) - simple single level depth
+2) Route parameter - param - useParam - non related component but simple data non secret
+3) context - useContext, Provider - simple data , avoid using for complex
+4) redux - usereduce, provider - multiple data(object), varied action

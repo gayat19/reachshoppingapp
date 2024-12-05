@@ -1,0 +1,197 @@
+emilys
+emilyspass
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlbWlseXMiLCJlbWFpbCI6ImVtaWx5LmpvaG5zb25AeC5kdW1teWpzb24uY29tIiwiZmlyc3ROYW1lIjoiRW1pbHkiLCJsYXN0TmFtZSI6IkpvaG5zb24iLCJnZW5kZXIiOiJmZW1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL2VtaWx5cy8xMjgiLCJpYXQiOjE3MzMyODUyMDksImV4cCI6MTczMzI4ODgwOX0.kBdX6EvZDKXmiNFPk3EmMaEqzX09xNK9j5OYynMYHIA
+
+'https://dummyjson.com/auth/me'
+--------------------------------
+emilys
+emilyspass
+----------------------------------
+npm i react-router-dom
+--------------------------------
+export default function Home(){
+    return(
+        <h1>Home</h1>
+    )
+}
+----------------------------------
+
+import { Navigate } from "react-router-dom";
+
+export function ProtectedRoute({child}){
+    const isAuthenticated = sessionStorage.getItem("token")?true:false;
+    if(isAuthenticated){
+        return(
+            child
+        );
+    }
+    else
+    {
+        return(
+            <Navigate to="/login" replace/>
+        )
+    }
+}
+-------------------------------------------------------------
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './App.css';
+import AddProduct from './Components/AddProduct/AddProduct';
+import Header  from './Components/Header/Header';
+import Login from './Components/Login/Login';
+import Products from './Components/Products/Products';
+import Home from './Components/Home/Home';
+import { ProtectedRoute } from './ProtectedRoute';
+
+function App() {
+  return (
+    <div className="App">
+      <div className='content'>
+          <BrowserRouter>
+              <Header/>
+
+            <Routes>
+              <Route path="/" element={<Home/>}/>  
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/products" element={<Products/>}/>
+              <Route path='/addprod'  element={
+                <ProtectedRoute child={<AddProduct/>}/> }/>
+              
+            </Routes>
+          </BrowserRouter>
+      </div>
+        </div>
+  );
+}
+
+export default App;
+
+----------------------------------------------
+import { useState } from "react"
+import { getUserDetails } from "../../Services/UserService";
+import { Link} from "react-router-dom";
+
+
+export default function Header(){
+//     const [username,setUserName] = useState("Guest")
+// const showUser=()=>{
+//     //console.log("Show User");
+//     getUserDetails()
+//     .then((response)=>{
+//         setUserName(response.data.firstName);
+//     }).catch((error)=>{
+//         alert("You are yet to login")
+//         console.log(error);
+//         setUserName("Guest");
+//     })
+// }
+    return(
+        <div>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav">
+                    <li className="nav-item active">
+                       <Link className="nav-link" to="/products">Products</Link>
+                    </li>
+                    <li className="nav-item">
+                     <Link className="nav-link" to="/login">Login</Link>
+                    </li>
+                    <li className="nav-item">
+                     <Link className="nav-link" to="/addprod">Add Product</Link>
+                    </li>
+                </ul>
+            </div>
+            </nav>
+        </div>
+    )
+}
+-----------------------------------------------------
+import { useNavigate } from 'react-router';
+import { addNewProduct } from '../../Services/ProductService';
+import './AddProduct.css';
+
+
+import { useState } from 'react';
+const AddProduct = () => {
+    const [product, setProduct] = useState(
+        {title:"", price:0,quantity:0});
+
+    const[status,setStatus]=useState(false);
+
+    const[error,setError]=useState({title:" ",price:" ",quantity:" "});
+    const navigate = useNavigate();
+
+    const submitHandler = (event) => {
+        event.preventDefault();
+        setStatus(true);
+        if(error.price || error.title || error.quantity)
+        {
+            alert("Please fill all the details");
+            setStatus(false);
+            setProduct({title:"", price:0,quantity:0});
+            return;
+        }
+        
+        addNewProduct(product)
+        .then(response=>{
+           if(response.status===201)
+                alert("Product Added Successfully");
+            navigate('/products');
+        }).catch(error=>{
+            alert("Something went wrong");
+        }).finally(()=>{
+            setStatus(false);
+            setProduct({title:"", price:0,quantity:0});
+        });
+    }
+    const changeHandler = (event) => {
+        setProduct({...product,
+            [event.target.name]: event.target.value});
+    }
+    const checkData = (event) => {
+        if(event.target.name==="title" && event.target.value.length<3){
+                setError({...error,title:"Title must be atleast 3 characters"});
+            }
+            else if(event.target.name==="title")
+                setError({...error,title:""});
+        if(event.target.name==="price" && event.target.value<1){
+                setError({...error,price:"Price must be greater than 0"});
+            }   
+            else if(event.target.name==="price")
+                setError({...error,price:""});
+        if(event.target.name==="quantity" && event.target.value<1){
+                setError({...error,quantity:"Quantity must be greater than 0"});
+            }
+            else if(event.target.name==="quantity")
+                setError({...error,quantity:""});
+    }
+    return(
+        <div>
+            <button onClick={()=>navigate('/products')} className="btn btn-primary">Back</button>
+            <h1>Add Product</h1>
+            <form className="product-form">
+                <label className="form-control">Product Name</label>
+                <input name="title" value={product.title}
+                onChange={changeHandler}
+                onBlur={checkData}
+                className="form-control" type="text" required minLength="3" />
+                <span className="text-danger">{error.title}</span>
+                <label className="form-control">Product Price</label>
+                <input name="price" value={product.price}
+                  onChange={changeHandler}
+                  onBlur={checkData}
+                className="form-control" type="number" required min="1" />
+                 <span className="text-danger">{error.price}</span>
+                <label className="form-control">Quantity</label>
+                <input name="quantity" value={product.quantity}
+                  onChange={changeHandler}
+                  onBlur={checkData}
+                className="form-control" type="number" required min="1" />
+                 <span className="text-danger">{error.quantity}</span>
+                <button disabled={status} onClick={submitHandler} className="btn btn-success" type="submit">Add Product</button>
+            </form>
+        </div>
+    );
+};
+
+export default AddProduct;
