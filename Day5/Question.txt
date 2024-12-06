@@ -1,0 +1,9 @@
+Create a shopping app that will allow user to view products
+to add to cart the user has to be logged in
+allow use to modify the cart and place order
+
+
+gayat_19@yahoo.com
+Gayathri Mahadevan
+
+https://www.linkedin.com/in/gayathri-mahadevan/

@@ -12,13 +12,20 @@ import { createContext,useState } from 'react';
 import Shop from './Components/Shop/Shop';
 
 import Cart from './Components/Cart/Cart';
+import Default from './Components/Default/Default';
+import PriceUpdate from './Components/PriceUpdate/PriceUpdate';
+import ChangePrice from './Components/ChangePrice/ChangePrice';
+import ShoppingSearch from './Components/ShoppingSearch/ShoppingSearch';
 
 export const UserContext = createContext();
 function App() {
-  const [user,setUser] = useState();
+  //const [user,setUser] = useState();
   return (
     <div className="App">
-      <UserContext.Provider value={{user,setUser}}>
+      <ShoppingSearch/>
+      {/* <ChangePrice/> */}
+      {/* <PriceUpdate/> */}
+      {/* <UserContext.Provider value={{user,setUser}}>
       <div className='content'>
       <h2>
         Welcome to the Shopping App - {user}
@@ -28,6 +35,7 @@ function App() {
 
 
             <Routes>
+              <Route path="/" element={<Default/>}/>
               <Route path="/home" element={<Home/>}>
               <Route path='list' element={<ProductList/>}>
                 <Route path='/home/list/details/:pname' element={<ProductDetails/>}/>
@@ -43,7 +51,7 @@ function App() {
             </Routes>
           </BrowserRouter>
       </div>
-      </UserContext.Provider>
+      </UserContext.Provider> */}
         </div>
   );
 }

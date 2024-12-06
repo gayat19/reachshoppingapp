@@ -26,6 +26,9 @@ const {user} = useContext(UserContext);
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                 <li className="nav-item active">
+                       <Link className="nav-link" to="/">Default</Link>
+                    </li>
+                <li className="nav-item active">
                        <Link className="nav-link" to="/home">Home</Link>
                     </li>
                     <li className="nav-item active">
